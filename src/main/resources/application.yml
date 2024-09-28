@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    username: root
+    password: 414670
+    url: jdbc:mysql://localhost:3306/flight?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    # 开启驼峰命名转换
+    map-underscore-to-camel-case: true
+
+server:
+  port: 8080
