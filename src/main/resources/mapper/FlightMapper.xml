@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.group7.flight.mapper.FlightMapper">
+
+    <resultMap id="flightResultMap" type="com.group7.flight.entity.Flight">
+        <id column="flightId" property="flightId" />
+        <result column="flightNumber" property="flightNumber" />
+        <result column="airplaneId" property="airplaneId" />
+        <result column="departureTime" property="departureTime" />
+        <result column="arriveTime" property="arriveTime" />
+        <result column="price" property="price" />
+        <result column="status" property="status" />
+        <association property="route" javaType="com.group7.flight.entity.Route">
+            <result column="routeId" property="routeId" />
+            <result column="departureAirportId" property="departureAirportId" />
+            <result column="arrivalAirportId" property="arrivalAirportId" />
+            <result column="stopoverAirportId" property="stopoverAirportId" />
+            <result column="distanceKm" property="distanceKm" />
+            <result column="durationHours" property="durationHours" />
+            <result column="routeType" property="routeType" />
+        </association>
+    </resultMap>
+
+    <select id="getAllAirports" resultType="com.group7.flight.entity.Airport">
+        SELECT * FROM airport
+    </select>
+
+    <select id="getFlightsByDeptArrAndDate" resultMap="flightResultMap">
+        SELECT f.flight_id AS flightId,
+        f.flight_number AS flightNumber,
+        f.airplane_id AS airplaneId,
+        f.route_id AS routeId,  -- 确保 routeId 被选择
+        f.departure_date AS departureDate,
+        f.departure_time AS departureTime,
+        f.arrive_time AS arriveTime,
+        f.price AS price,
+        f.status AS status,
+        r.departure_airport_id AS departureAirportId,
+        r.arrival_airport_id AS arrivalAirportId,
+        r.stopover_airport_id AS stopoverAirportId,
+        r.distance_km AS distanceKm,
+        r.duration_hours AS durationHours,
+        r.route_type AS routeType
+        FROM flight f
+        JOIN routes r ON f.route_id = r.route_id
+        WHERE
+        1 = 1
+        <if test="deptId != 0">
+            and r.departure_airport_id = #{deptId}
+        </if>
+        <if test="arrId != 0">
+            and r.arrival_airport_id = #{arrId}
+        </if>
+        and DATE_FORMAT(f.departure_time, '%Y-%m-%d') = DATE_FORMAT(#{date}, '%Y-%m-%d')
+    </select>
+
+    <select id="getAirportByID" resultType="com.group7.flight.entity.Airport">
+        SELECT
+            *
+        FROM
+            airport
+        WHERE
+            airport_id = #{airportId}
+    </select>
+    <select id="getAirplaneById" resultType="com.group7.flight.entity.Airplane">
+        SELECT
+            *
+        FROM
+            airplane
+        WHERE
+            airplane_id = #{airplaneId}
+    </select>
+
+</mapper>
