@@ -2,7 +2,6 @@ package com.group7.flight.config;
 
 
 import com.group7.flight.filter.AuthenticationFilter;
-import com.group7.flight.service.UserService;
 import com.group7.flight.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

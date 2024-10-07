@@ -12,4 +12,6 @@ public interface UserMapper {
     User getUserByUsername(@Param("username") String username);
 
     int insertUser(User user);
+
+    int updateUser(User user);
 }

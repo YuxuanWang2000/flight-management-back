@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.group7.flight.mapper.UserMapper">
+    <update id="updateUser">
+        UPDATE user
+        SET nickname = #{nickname},
+            name = #{name},
+            tel = #{tel},
+            email = #{email}
+        WHERE username = #{username};
+    </update>
 
 
     <select id="getUserById" resultType="com.group7.flight.entity.User">
@@ -12,7 +20,10 @@
     </select>
 
     <insert id="insertUser" parameterType="com.group7.flight.entity.User">
-        insert into `user` (username, password, email, tel, name) VALUES(#{username}, #{password}, #{email}, #{tel}, #{name})
+        insert into `user` (username, password, nickname, email, tel, name)
+        VALUES(#{username}, #{password}, #{nickname}, #{email}, #{tel}, #{name})
     </insert>
+
+
 
 </mapper>

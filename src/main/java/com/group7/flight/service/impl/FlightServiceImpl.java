@@ -5,7 +5,6 @@ import com.group7.flight.entity.Airplane;
 import com.group7.flight.entity.Airport;
 import com.group7.flight.entity.Flight;
 import com.group7.flight.entity.Route;
-import com.group7.flight.mapper.FlightMapper;
 import com.group7.flight.service.FlightService;
 import com.group7.flight.vo.AirportVO;
 import com.group7.flight.vo.FlightVO;
