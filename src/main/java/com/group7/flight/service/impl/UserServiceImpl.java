@@ -3,7 +3,6 @@ package com.group7.flight.service.impl;
 import com.group7.flight.dto.RegisterDto;
 import com.group7.flight.entity.User;
 import com.group7.flight.mapper.UserMapper;
-import com.group7.flight.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

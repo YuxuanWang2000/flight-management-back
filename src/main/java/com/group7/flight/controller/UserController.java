@@ -4,7 +4,6 @@ package com.group7.flight.controller;
 import com.group7.flight.dto.RegisterDTO;
 import com.group7.flight.dto.UserInfoDTO;
 import com.group7.flight.response.ResponseResult;
-import com.group7.flight.service.UserService;
 import com.group7.flight.util.JwtUtil;
 import com.group7.flight.vo.UserVO;
 import com.sun.org.apache.xpath.internal.operations.Bool;
