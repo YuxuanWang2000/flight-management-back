@@ -1,10 +1,13 @@
 package com.group7.flight.controller;
 
 
-import com.group7.flight.dto.RegisterDto;
+import com.group7.flight.dto.RegisterDTO;
+import com.group7.flight.dto.UserInfoDTO;
 import com.group7.flight.response.ResponseResult;
 import com.group7.flight.service.UserService;
 import com.group7.flight.util.JwtUtil;
+import com.group7.flight.vo.UserVO;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +23,8 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public ResponseResult<String>  register(@RequestBody RegisterDto registerDto){
+    public ResponseResult<String>  register(@RequestBody RegisterDTO registerDto){
+        log.info(registerDto.toString());
         if (userService.register(registerDto)) {
             return ResponseResult.success("Register success!");
         }
@@ -34,7 +38,22 @@ public class UserController {
 
         JwtUtil.isTokenExpired(token);
         return ResponseResult.success(true);
-
     }
 
+    @GetMapping("/userInfo")
+    public ResponseResult<UserVO> getUserInfo(HttpServletRequest request){
+        String token = request.getHeader("token");
+        String username = JwtUtil.getUsernameFromToken(token);
+
+        return ResponseResult.success(userService.getUserInfo(username));
+    }
+
+    @PostMapping("/userInfo")
+    public ResponseResult<Boolean> updateUserInfo (HttpServletRequest request, @RequestBody UserInfoDTO userInfoDTO) {
+        String token = request.getHeader("token");
+        String username = JwtUtil.getUsernameFromToken(token);
+        log.info(userInfoDTO.toString());
+
+        return ResponseResult.success(userService.updateUserInfo(username, userInfoDTO) == 1);
+    }
 }
