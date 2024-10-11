@@ -70,5 +70,295 @@
         WHERE
             airplane_id = #{airplaneId}
     </select>
+    <select id="getFlightById" resultMap="flightResultMap">
+        SELECT
+            f.flight_id AS flightId,
+            f.flight_number AS flightNumber,
+            f.airplane_id AS airplaneId,
+            f.route_id AS routeId,  -- 确保 routeId 被选择
+            f.departure_date AS departureDate,
+            f.departure_time AS departureTime,
+            f.arrive_time AS arriveTime,
+            f.price AS price,
+            f.status AS status,
+            r.departure_airport_id AS departureAirportId,
+            r.arrival_airport_id AS arrivalAirportId,
+            r.stopover_airport_id AS stopoverAirportId,
+            r.distance_km AS distanceKm,
+            r.duration_hours AS durationHours,
+            r.route_type AS routeType
+        FROM
+            flight f
+        JOIN
+                routes r ON f.route_id = r.route_id
+        WHERE
+            flight_id = #{id}
+    </select>
+    <select id="selectFlightByDate" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM flight
+        WHERE departure_date = #{date}
+    </select>
+    <select id="getFlightByDate" resultType="com.group7.flight.entity.Flight">
+        SELECT flight_id
+        FROM flight
+        WHERE departure_date = #{date}
+    </select>
+
+    <insert id="insertFlightMonday">
+        INSERT INTO flight (flight_number, airplane_id, route_id, departure_date, departure_time, arrive_time, price)
+                VALUES
+        -- Flight 1
+        ('FL001', 1, 1, #{date}, CONCAT(#{date}, ' 08:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 08:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 1)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 1)) MINUTE), 150.00),
+
+        -- Flight 2
+        ('FL002', 2, 2, #{date}, CONCAT(#{date}, ' 09:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 09:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 2)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 2)) MINUTE), 180.00),
+
+        -- Flight 3
+        ('FL003', 3, 3, #{date}, CONCAT(#{date}, ' 10:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 10:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 3)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 3)) MINUTE),200.00),
+
+        -- Flight 4
+        ('FL004', 4, 4, #{date}, CONCAT(#{date}, ' 12:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 12:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 4)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 4)) MINUTE),220.00),
+
+        -- Flight 5
+        ('FL005', 5, 5, #{date}, CONCAT(#{date}, ' 13:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 13:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 5)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 5)) MINUTE),250.00);
+    </insert>
+
+    <insert id="insertFlightTuesday">
+        INSERT INTO flight (flight_number, airplane_id, route_id, departure_date, departure_time, arrive_time, price)
+                VALUES
+        -- Flight 1
+        ('FL006', 6, 6, #{date}, CONCAT(#{date}, ' 08:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 08:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 6)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 6)) MINUTE),180.00),
+
+        -- Flight 2
+        ('FL007', 7, 7, #{date}, CONCAT(#{date}, ' 09:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 09:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 7)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 7)) MINUTE), 220.00),
+
+        -- Flight 3
+        ('FL008', 8, 8, #{date}, CONCAT(#{date}, ' 10:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 10:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 8)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 8)) MINUTE),250.00),
+
+        -- Flight 4
+        ('FL009', 9, 9, #{date}, CONCAT(#{date}, ' 12:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 12:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 9)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 9)) MINUTE),180.00),
+
+        -- Flight 5
+        ('FL010', 10, 10, #{date}, CONCAT(#{date}, ' 13:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 13:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 10)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 10)) MINUTE),200.00);
+    </insert>
+
+    <insert id="insertFlightWednesday">
+        INSERT INTO flight (flight_number, airplane_id, route_id, departure_date, departure_time, arrive_time, price)
+                VALUES
+        -- Flight 1
+        ('FL011', 1, 1, #{date}, CONCAT(#{date}, ' 08:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 08:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 1)) * 60
+        + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 1)) MINUTE),160.00),
+
+        -- Flight 2
+        ('FL012', 2, 2, #{date}, CONCAT(#{date}, ' 09:30:00'),
+         DATE_ADD(CONCAT(#{date}, ' 09:30:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 2)) * 60
+        + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 2)) MINUTE),190.00),
+
+        -- Flight 3
+        ('FL013', 3, 3, #{date}, CONCAT(#{date}, ' 10:45:00'),
+         DATE_ADD(CONCAT(#{date}, ' 10:45:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 3)) * 60
+        + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 3)) MINUTE),210.00),
+
+        -- Flight 4
+        ('FL014', 4, 4, #{date}, CONCAT(#{date}, ' 12:15:00'),
+         DATE_ADD(CONCAT(#{date}, ' 12:15:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 4)) * 60
+        + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 4)) MINUTE),225.00),
+
+        -- Flight 5
+        ('FL015', 5, 5, #{date}, CONCAT(#{date}, ' 13:45:00'),
+         DATE_ADD(CONCAT(#{date}, ' 13:45:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 5)) * 60
+        + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 5)) MINUTE),260.00),
+
+        -- Flight 6
+        ('FL016', 6, 6, #{date}, CONCAT(#{date}, ' 15:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 15:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 6)) * 60
+        + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 6)) MINUTE), 220.00);
+    </insert>
+
+    <insert id="insertFlightThursday">
+        INSERT INTO flight (flight_number, airplane_id, route_id, departure_date, departure_time, arrive_time, price)
+                VALUES
+        -- Flight 1
+        ('FL017', 1, 7, #{date}, CONCAT(#{date}, ' 07:30:00'),
+         DATE_ADD(CONCAT(#{date}, ' 07:30:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 7)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 7)) MINUTE), 185.00),
+
+        -- Flight 2
+        ('FL018', 2, 8, #{date}, CONCAT(#{date}, ' 09:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 09:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 8)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 8)) MINUTE), 215.00),
+
+        -- Flight 3
+        ('FL019', 3, 9, #{date}, CONCAT(#{date}, ' 10:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 10:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 9)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 9)) MINUTE), 225.00),
+
+        -- Flight 4
+        ('FL020', 4, 10, #{date}, CONCAT(#{date}, ' 11:45:00'),
+         DATE_ADD(CONCAT(#{date}, ' 11:45:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 10)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 10)) MINUTE), 250.00),
+
+        -- Flight 5
+        ('FL021', 5, 1, #{date}, CONCAT(#{date}, ' 13:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 13:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 1)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 1)) MINUTE), 190.00);
+
+    </insert>
+
+    <insert id="insertFlightFriday">
+        INSERT INTO flight (flight_number, airplane_id, route_id, departure_date, departure_time, arrive_time, price)
+                VALUES
+        -- Flight 1
+        ('FL022', 1, 2, #{date}, CONCAT(#{date}, ' 07:45:00'),
+         DATE_ADD(CONCAT(#{date}, ' 07:45:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 2)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 2)) MINUTE), 165.00),
+
+        -- Flight 2
+        ('FL023', 2, 3, #{date}, CONCAT(#{date}, ' 09:15:00'),
+         DATE_ADD(CONCAT(#{date}, ' 09:15:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 3)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 3)) MINUTE), 195.00),
+
+        -- Flight 3
+        ('FL024', 3, 4, #{date}, CONCAT(#{date}, ' 10:45:00'),
+         DATE_ADD(CONCAT(#{date}, ' 10:45:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 4)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 4)) MINUTE), 220.00),
+        -- Flight 4
+        ('FL025', 4, 5, #{date}, CONCAT(#{date}, ' 12:15:00'),
+         DATE_ADD(CONCAT(#{date}, ' 12:15:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 5)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 5)) MINUTE), 230.00),
+
+        -- Flight 5
+        ('FL026', 5, 6, #{date}, CONCAT(#{date}, ' 13:45:00'),
+         DATE_ADD(CONCAT(#{date}, ' 13:45:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 6)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 6)) MINUTE), 210.00),
+
+        -- Flight 6
+        ('FL027', 6, 7, #{date}, CONCAT(#{date}, ' 15:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 15:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 7)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 7)) MINUTE), 240.00);
+    </insert>
+
+    <insert id="insertFlightSaturday">
+        INSERT INTO flight (flight_number, airplane_id, route_id, departure_date, departure_time, arrive_time, price)
+                VALUES
+        -- Flight 1
+        ('FL028', 1, 8, #{date}, CONCAT(#{date}, ' 08:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 08:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 8)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 8)) MINUTE), 185.00),
+
+        -- Flight 2
+        ('FL029', 2, 9, #{date}, CONCAT(#{date}, ' 09:30:00'),
+         DATE_ADD(CONCAT(#{date}, ' 09:30:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 9)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 9)) MINUTE), 195.00),
+
+        -- Flight 3
+        ('FL030', 3, 10, #{date}, CONCAT(#{date}, ' 10:45:00'),
+         DATE_ADD(CONCAT(#{date}, ' 10:45:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 10)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 10)) MINUTE), 230.00),
+
+        -- Flight 4
+        ('FL031', 4, 1, #{date}, CONCAT(#{date}, ' 12:15:00'),
+         DATE_ADD(CONCAT(#{date}, ' 12:15:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 1)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 1)) MINUTE), 250.00),
+
+        -- Flight 5
+        ('FL032', 5, 2, #{date}, CONCAT(#{date}, ' 13:45:00'),
+         DATE_ADD(CONCAT(#{date}, ' 13:45:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 2)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 2)) MINUTE), 265.00),
+
+        -- Flight 6
+        ('FL033', 6, 3, #{date}, CONCAT(#{date}, ' 15:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 15:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 3)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 3)) MINUTE), 270.00);
+    </insert>
+
+    <insert id="insertFlightSunday">
+        INSERT INTO flight (flight_number, airplane_id, route_id, departure_date, departure_time, arrive_time, price)
+                VALUES
+        -- Flight 1
+        ('FL034', 1, 4, #{date}, CONCAT(#{date}, ' 08:15:00'),
+         DATE_ADD(CONCAT(#{date}, ' 08:15:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 4)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 4)) MINUTE), 190.00),
+
+        -- Flight 2
+        ('FL035', 2, 5, #{date}, CONCAT(#{date}, ' 09:45:00'),
+         DATE_ADD(CONCAT(#{date}, ' 09:45:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 5)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 5)) MINUTE), 200.00),
+
+        -- Flight 3
+        ('FL036', 3, 6, #{date}, CONCAT(#{date}, ' 11:15:00'),
+         DATE_ADD(CONCAT(#{date}, ' 11:15:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 6)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 6)) MINUTE), 230.00),
+
+        -- Flight 4
+        ('FL037', 4, 7, #{date}, CONCAT(#{date}, ' 12:45:00'),
+         DATE_ADD(CONCAT(#{date}, ' 12:45:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 7)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 7)) MINUTE), 250.00),
+
+        -- Flight 5
+        ('FL038', 5, 8, #{date}, CONCAT(#{date}, ' 14:00:00'),
+         DATE_ADD(CONCAT(#{date}, ' 14:00:00'),
+                  INTERVAL (FLOOR((SELECT duration_hours FROM routes WHERE route_id = 8)) * 60
+                + (SELECT (duration_hours - FLOOR(duration_hours)) * 60 FROM routes WHERE route_id = 8)) MINUTE), 270.00);
+    </insert>
 
 </mapper>

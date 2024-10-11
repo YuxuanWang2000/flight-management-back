@@ -9,6 +9,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Slf4j
@@ -19,28 +20,34 @@ public class GlobalCorsConfiguration implements WebMvcConfigurer {
 
     @Bean
     public CorsFilter corsFilter() {
-        //1. 添加 CORS配置信息
+        // Add CORS configuration information
         CorsConfiguration config = new CorsConfiguration();
-        //放行哪些原始域
+        // Which raw domains are allowed
         config.addAllowedOrigin(CorsConfiguration.ALL);
-        //是否发送 Cookie
+        // Whether to send cookies
         config.setAllowCredentials(true);
-        //放行哪些请求方式
+        // Which request modes are allowed
         config.addAllowedMethod(CorsConfiguration.ALL);
-        //放行哪些原始请求头部信息
+        // Which request headers are allowed
         config.addAllowedHeader(CorsConfiguration.ALL);
-        //2. 添加映射路径
+        // Adding a mapping path
         UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
         corsConfigurationSource.registerCorsConfiguration("/**", config);
 
         log.info("CORS Filter is being registered.");
-        //3. 返回新的CorsFilter
+        // Return the new CorsFilter
         return new CorsFilter(corsConfigurationSource);
     }
 
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(jwtInterceptor)
+//                .excludePathPatterns("/", "/index", "/user/login", "/user/register", "/user/checkToken",
+//                        "/favicon.ico", "/static/**", "/js/**", "/css/**", "/img/**");
+//    }
+
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtInterceptor)
-                .excludePathPatterns("/user/**");
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
     }
 }

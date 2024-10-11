@@ -1,14 +1,20 @@
 spring:
   datasource:
     username: root
-    password: 414670
-    url: jdbc:mysql://localhost:3306/flight?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    password: 414670_Lzj
+    url: jdbc:mysql://bj-cynosdbmysql-grp-fp44mvsq.sql.tencentcdb.com:25373/flight?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
+    # template engine
+    thymeleaf:
+      mode: HTML5
+      encoding: utf-8
+      # disable cache
+      cache: false
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
-    # 开启驼峰命名转换
+    # Turn on the hump naming conversion
     map-underscore-to-camel-case: true
 
 server:
