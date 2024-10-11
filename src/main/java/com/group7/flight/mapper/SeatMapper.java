@@ -10,5 +10,7 @@ public interface SeatMapper {
     List<Seat> getBusinessSeatByFlightId(int flightId);
     List<Seat> getEconomySeatByFlightId(int flightId);
     Seat getSeatByFlightIdAndSeatNumberAndSeatType(int flightId, String seatType, String seatNumber);
-    int updateSeatSold(int flightId, String seatType, String seatNumber);
+    int getSeatByFlightId(int flightId);
+    int updateSeatSold(int flightId, String seatType, String seatNumber, boolean sold);
+    int insertSeatByFlightId(int flightId);
 }

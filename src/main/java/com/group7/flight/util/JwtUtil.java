@@ -21,7 +21,7 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .setHeaderParam("type", "JWT")
-                .setSubject("username")
+                .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(instance.getTime())
                 .signWith(SignatureAlgorithm.HS512, signature)
@@ -29,7 +29,7 @@ public class JwtUtil {
     }
 
     /**
-     * 验证token  合法性
+     * Verify token validity
      */
     public static Boolean isTokenExpired(String token){
         log.error(token);
@@ -39,6 +39,7 @@ public class JwtUtil {
 
 
     public static Claims getTokenClaim(String token) {
+        log.info("JWTUtil: " + token);
         Claims claims = Jwts.parser()
                 .setSigningKey(signature).parseClaimsJws(token).getBody();
         return claims;

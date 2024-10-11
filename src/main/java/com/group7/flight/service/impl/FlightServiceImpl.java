@@ -12,8 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -56,13 +60,17 @@ public class FlightServiceImpl implements FlightService {
 
             double consuming = route.getDurationHours();
 
-            res.add(new FlightVO(flight.getFlightId(), flight.getFlightNumber(), flight.getDepartureTime(),
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            res.add(new FlightVO(flight.getFlightId(), flight.getFlightNumber(),
+                    dateFormat.format(flight.getDepartureTime()), dateFormat.format(flight.getArriveTime()),
                     flight.getAirplaneId(), airplane.getModel(), deptAirport.getAirportId(), deptAirport.getAirportCode(),
                     arrAirport.getAirportId(), arrAirport.getAirportCode(),
-                    stopoverAirport.getAirportId(),
-                    stopoverAirport.getAirportCode(),
+                    stopoverAirport.getAirportId(), stopoverAirport.getAirportCode(),
                     consuming, flight.getPrice(), flight.getStatus()));
         }
+
+        log.info(res.toString());
         return res;
     }
 }

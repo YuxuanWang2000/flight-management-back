@@ -27,6 +27,12 @@
                    #{foodService}
                )
     </insert>
+    <delete id="deleteOrderById">
+        delete
+            from orders
+        where
+            order_id = #{id}
+    </delete>
 
     <select id="getOrdersByUsernameAndStatus" resultType="com.group7.flight.entity.Order">
         SELECT *
@@ -35,6 +41,11 @@
         <if test="status != null and status != ''">
             AND status = #{status}
         </if>
+    </select>
+    <select id="getOrderById" resultType="com.group7.flight.entity.Order">
+        SELECT *
+        FROM orders
+        WHERE order_id = #{id}
     </select>
 
 </mapper>

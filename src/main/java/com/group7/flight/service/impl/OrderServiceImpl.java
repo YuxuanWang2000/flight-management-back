@@ -1,5 +1,6 @@
 package com.group7.flight.service.impl;
 
+import cn.hutool.core.date.DateTime;
 import com.group7.flight.dto.OrderDTO;
 import com.group7.flight.entity.*;
 import com.group7.flight.mapper.FlightMapper;
@@ -31,10 +32,10 @@ public class OrderServiceImpl implements OrderService {
     FlightMapper flightMapper;
 
     /*
-     * 首先根据seat_type和seat_number查询seat_id
-     * 确认seat没有被卖掉后，将seat转为被卖掉
-     * 然后创建一个Order对象
-     **/
+    * First query seat_id according to seat_type and seat_number
+    * After confirming that the seat has not been sold, turn the seat into sold
+    * Then create an Order object
+    **/
     @Override
     @Transactional
     public boolean createOrder(String username, OrderDTO orderDTO) {
@@ -45,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
         } else {
             seat.setSold(true);
             seatMapper.updateSeatSold(orderDTO.getFlightId(),
-                    orderDTO.getSeatType(), orderDTO.getSeatNumber());
+                    orderDTO.getSeatType(), orderDTO.getSeatNumber(), true);
             Order order = new Order(orderDTO.getFlightId(), orderDTO.getSeatType(), orderDTO.getSeatNumber(),
                     orderDTO.getTotalPrice(), orderDTO.getPassengerName(), username, orderDTO.getEmail(), orderDTO.getPhone(),
                     orderDTO.isBaggageService(), orderDTO.isFoodService());
@@ -57,10 +58,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /*
-     * 根据order和status查询出对应的订单
-     * 根据每个order的flight_id查询出航班相关信息，并创建flightVO对象
-     * 然后创建OrderVO对象，加入list中
-     **/
+            * Query the corresponding order according to Order and status
+            * Query flight information based on the flight_id of each order and create flightVO objects
+            * Then create the OrderVO object and add it to the list
+            **/
     @Override
     public List<OrderVO> getAllOrders(String username, String status) {
         List<OrderVO> res = new ArrayList<>();
@@ -92,5 +93,17 @@ public class OrderServiceImpl implements OrderService {
 
         }
         return res;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteOrder(int id) {
+        Order orderById = orderMapper.getOrderById(id);
+        seatMapper.updateSeatSold(orderById.getFlightId(), orderById.getSeatType(), orderById.getSeatNumber(), false);
+        if (orderMapper.deleteOrderById(id) == 0){
+            return false;
+        } else {
+            return true;
+        }
     }
 }

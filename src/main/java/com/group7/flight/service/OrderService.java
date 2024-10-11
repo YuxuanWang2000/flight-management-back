@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public interface OrderService {
-    public boolean createOrder(String username, OrderDTO orderDTO);
-    public List<OrderVO> getAllOrders(String name, String status);
+    boolean createOrder(String username, OrderDTO orderDTO);
+    List<OrderVO> getAllOrders(String name, String status);
+    boolean deleteOrder(int id);
 }

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.group7.flight.mapper.SeatMapper">
+    <insert id="insertSeatByFlightId">
+        INSERT INTO flight_seats (seat_number, flight_id, seat_type)
+        SELECT seat_number, #{flightId} AS flight_id, seat_type
+        FROM seats;
+    </insert>
     <update id="updateSeatSold" parameterType="com.group7.flight.entity.Seat">
         UPDATE flight_seats
-        SET is_sold = TRUE
+        SET is_sold = #{sold}
         WHERE flight_id = #{flightId} AND seat_number = #{seatNumber} AND seat_type = #{seatType};
     </update>
 
@@ -21,5 +26,10 @@
     <select id="getSeatByFlightIdAndSeatNumberAndSeatType" resultType="com.group7.flight.entity.Seat">
         SELECT * from flight_seats
         WHERE flight_id = #{flightId} AND seat_number = #{seatNumber} AND seat_type = #{seatType}
+    </select>
+    <select id="getSeatByFlightId" resultType="java.lang.Integer">
+        select count(*)
+        from flight_seats
+        WHERE flight_id = #{flightId}
     </select>
 </mapper>
